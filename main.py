@@ -1,7 +1,7 @@
 
 from typing import Union
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
-from .dataloaders.loader import get_loader
+from dataloaders.loader import get_loader
 from argparse import Namespace
 import pdb
 import torch as tc
@@ -23,7 +23,7 @@ def get_model_and_dataloader(model_name: str, dataset_name: str, split: str = "t
         mnli_label_dict = {"contradiction": 2, "entailment": 0, "neutral": 1}
 
     tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForSequenceClassification.from_pretrained(model_name).cpu()
+    model = AutoModelForSequenceClassification.from_pretrained(model_name).cuda()
 
     def decorator(func):
         @functools.wraps(func)
@@ -51,6 +51,6 @@ if __name__ == "__main__":
     with tc.no_grad():
         for i, (input, target) in tqdm( enumerate(dataloader) ):
             pdb.set_trace()
-            output = model({x:y.cpu() for x,y in input.items()})
+            output = model(input)
             preds = tc.max(output["logits"], dim=-1).indices
             pdb.set_trace()
