@@ -44,12 +44,14 @@ def get_model_and_dataloader(model_name: str, dataset_name: str, split: str = "t
 
 if __name__ == "__main__":
 
-    model_name   = "connectivity/cola_6ep_ft-47"
-    dataset_name = "cola"
-    model, dataloader = get_model_and_dataloader(model_name, dataset_name, num_exs = 5000)
+    model_name   = "connectivity/cola_6ep_ft-21"
+    dataset_name = "qqp"
+    model, dataloader = get_model_and_dataloader(model_name, dataset_name, split = "train", batch_size = 8, num_exs = 5000)
 
     with tc.no_grad():
         for i, (input, target) in tqdm( enumerate(dataloader) ):
             output = model(input)
             preds = tc.max(output["logits"], dim=-1).indices
+            
+            print (target)
             pdb.set_trace()
