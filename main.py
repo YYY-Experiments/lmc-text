@@ -50,7 +50,6 @@ if __name__ == "__main__":
 
     with tc.no_grad():
         for i, (input, target) in tqdm( enumerate(dataloader) ):
-            pdb.set_trace()
             output = model(input)
             preds = tc.max(output["logits"], dim=-1).indices
             pdb.set_trace()
